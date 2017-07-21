@@ -23,7 +23,7 @@ gulp.task(tasks.CLIENT_WATCH, [tasks.CLIENT_BUILD_TS, ], () => {
   
 
   return gulp.watch(_watchable, [
-    tasks.CLIENT_BUILD_TS, 
+    tasks.CLIENT_BUILD_TS,
     
     tasks.CLIENT_RELOAD,
   ]);

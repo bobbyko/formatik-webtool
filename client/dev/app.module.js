@@ -17,26 +17,26 @@ var insta_formatik_service_1 = require("./insta-formatik/services/insta-formatik
 var AppModule = (function () {
     function AppModule() {
     }
+    AppModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                platform_browser_1.BrowserModule,
+                forms_1.FormsModule,
+                http_1.HttpModule,
+                insta_formatik_route_1.InstaFormatikRouting
+            ],
+            declarations: [
+                app_1.App,
+                insta_formatik_cmp_1.InstaFormatikCmp,
+            ],
+            providers: [
+                insta_formatik_service_1.InstaFormatikService,
+            ],
+            bootstrap: [
+                app_1.App,
+            ],
+        })
+    ], AppModule);
     return AppModule;
 }());
-AppModule = __decorate([
-    core_1.NgModule({
-        imports: [
-            platform_browser_1.BrowserModule,
-            forms_1.FormsModule,
-            http_1.HttpModule,
-            insta_formatik_route_1.InstaFormatikRouting
-        ],
-        declarations: [
-            app_1.App,
-            insta_formatik_cmp_1.InstaFormatikCmp,
-        ],
-        providers: [
-            insta_formatik_service_1.InstaFormatikService,
-        ],
-        bootstrap: [
-            app_1.App,
-        ],
-    })
-], AppModule);
 exports.AppModule = AppModule;

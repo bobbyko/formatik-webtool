@@ -10,12 +10,12 @@ var core_1 = require("@angular/core");
 var App = (function () {
     function App() {
     }
+    App = __decorate([
+        core_1.Component({
+            selector: "app",
+            template: "\n\t\t<router-outlet></router-outlet>\n\t"
+        })
+    ], App);
     return App;
 }());
-App = __decorate([
-    core_1.Component({
-        selector: "app",
-        template: "\n\t\t<router-outlet></router-outlet>\n\t"
-    })
-], App);
 exports.App = App;

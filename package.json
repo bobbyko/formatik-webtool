@@ -1,7 +1,7 @@
 {
-  "name": "Webtool",
+  "name": "formatik-webtool",
   "version": "0.0.1",
-  "main": "src/Webtool.js",
+  "main": "src/formatik-webtool.js",
   "scripts": {
     "start": "gulp",
     "dev": "gulp",
@@ -19,18 +19,12 @@
     "@angular/platform-browser-dynamic": "^4.1.0",
     "@angular/router": "^4.1.0",
     "angular2-uuid": "^1.1.1",
-    "babel-preset-es2015": "^6.1.18",
-    "babel-preset-es2016": "^6.0.11",
-    "babel-preset-stage-0": "^6.1.18",
-    "babel-regenerator-runtime": "^6.5.0",
-    "babel-register": "^6.7.2",
     "bootstrap": "^3.3.7",
     "newrelic": "^1.18.2",
     "reflect-metadata": "^0.1.3",
     "rxjs": "^5.0.0-beta.12",
     "systemjs": "^0.19.24",
-    "typescript": "^2.1.5",
-    "zone.js": "^0.6.23"
+    "zone.js": "^0.8.5"
   },
   "devDependencies": {
     "aliv": "^1.7.2",
@@ -40,6 +34,11 @@
     "browser-sync": "^2.5.2",
     "require-dir": "^0.3.0",
     "babili": "0.0.6",
+    "babel-preset-es2015": "^6.1.18",
+    "babel-preset-es2016": "^6.0.11",
+    "babel-preset-stage-0": "^6.1.18",
+    "babel-regenerator-runtime": "^6.5.0",
+    "babel-register": "^6.7.2",
     "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.4.3",
     "gulp-coveralls": "^0.1.3",
@@ -59,7 +58,7 @@
     "karma-coverage": "^1.1.1",
     "karma-firefox-launcher": "^1.0.0",
     "karma-ie-launcher": "^1.0.0",
-    "karma-ng-html2js-preprocessor": "^1.0.0",
+    "karma-ng-html2js-preprocessor": "^0.1.2",
     "karma-opera-launcher": "^1.0.0",
     "karma-phantomjs-launcher": "^1.0.1",
     "karma-safari-launcher": "^1.0.0",
@@ -67,18 +66,19 @@
     "chai": "^3.5.0",
     "coveralls": "^2.11.2",
     "istanbul": "^0.4.4",
-    "concurrently": "^2.0.0"
+    "concurrently": "^2.0.0",
+    "typescript": "^2.4.1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bobby.kotzev/Webtool.git"
+    "url": "https://github.com/bobby.kotzev/formatik-webtool.git"
   },
   "author": "bobby.kotzev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bobby.kotzev/Webtool/issues"
+    "url": "https://github.com/bobby.kotzev/formatik-webtool/issues"
   },
-  "homepage": "https://github.com/bobby.kotzev/Webtool",
+  "homepage": "https://github.com/bobby.kotzev/formatik-webtool",
   "engines": {
     "node": "stable"
   }

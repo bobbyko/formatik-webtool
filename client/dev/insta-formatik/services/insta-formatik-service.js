@@ -14,37 +14,42 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
+var angular2_uuid_1 = require("angular2-uuid");
 require("rxjs/add/operator/map");
-var InstaFormatikService = InstaFormatikService_1 = (function () {
+var InstaFormatikService = (function () {
     function InstaFormatikService(_http) {
         this._http = _http;
     }
+    InstaFormatikService_1 = InstaFormatikService;
     InstaFormatikService.prototype.evaluate = function (input, inputCacheId, example) {
         return this._http
             .post(InstaFormatikService_1.ENDPOINT + "/" + InstaFormatikService_1.apiUserId + "/evaluate", {
-            name: "Webtool request",
+            name: "Webtool request " + InstaFormatikService_1.sessionId,
             input: input,
             inputCacheId: inputCacheId,
-            example: example
+            example: example,
+            temporary: true
         })
             .map(function (r) { return r.json(); });
     };
     InstaFormatikService.prototype.process = function (formatId, input, inputCacheId) {
         return this._http
-            .post(InstaFormatikService_1.ENDPOINT + "/" + InstaFormatikService_1.apiUserId + "/{formatId}", {
+            .post(InstaFormatikService_1.ENDPOINT + "/" + InstaFormatikService_1.apiUserId + "/" + formatId, {
             input: input,
             inputCacheId: inputCacheId
         })
             .map(function (r) { return r.json(); });
     };
+    InstaFormatikService.sessionId = angular2_uuid_1.UUID.UUID();
+    //static ENDPOINT: string = "http://107.170.236.236/api/v0.1";
+    InstaFormatikService.ENDPOINT = "http://localhost:5000/api/v0.1";
+    InstaFormatikService.apiUserId = "59092f5f99da28278a6ea211";
+    InstaFormatikService = InstaFormatikService_1 = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(http_1.Http)),
+        __metadata("design:paramtypes", [http_1.Http])
+    ], InstaFormatikService);
     return InstaFormatikService;
+    var InstaFormatikService_1;
 }());
-InstaFormatikService.ENDPOINT = "http://107.170.236.236/api/v0.1";
-InstaFormatikService.apiUserId = "59092f5f99da28278a6ea211";
-InstaFormatikService = InstaFormatikService_1 = __decorate([
-    core_1.Injectable(),
-    __param(0, core_1.Inject(http_1.Http)),
-    __metadata("design:paramtypes", [http_1.Http])
-], InstaFormatikService);
 exports.InstaFormatikService = InstaFormatikService;
-var InstaFormatikService_1;

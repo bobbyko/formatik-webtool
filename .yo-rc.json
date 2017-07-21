@@ -1,6 +1,6 @@
 {
   "generator-ng-fullstack": {
-    "appName": "Webtool",
+    "appName": "formatik-webtool",
     "username": "bobby.kotzev",
     "userEmail": "bobby@octagonsolutions.co",
     "stack": "client",
@@ -10,6 +10,7 @@
     "stylePreprocessor": "none",
     "server": "",
     "secure": false,
-    "testsSeparated": true
+    "testsSeparated": true,
+    "boilerplate": true
   }
 }
