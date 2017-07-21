@@ -1,0 +1,15 @@
+{
+  "generator-ng-fullstack": {
+    "appName": "Webtool",
+    "username": "bobby.kotzev",
+    "userEmail": "bobby@octagonsolutions.co",
+    "stack": "client",
+    "repoHostUrl": "github.com",
+    "userNameSpace": "bobby.kotzev",
+    "client": "ng2",
+    "stylePreprocessor": "none",
+    "server": "",
+    "secure": false,
+    "testsSeparated": true
+  }
+}
