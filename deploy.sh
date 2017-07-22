@@ -22,8 +22,8 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
         -v ~/formatik-webtool:/var/formatik-webtool \
         -w /var/formatik-webtool \
         -c 512 \
-        node:6:11:1 \
-        /bin/bash -c "npm install; npm install typescript -g; gulp client.build:dist"
+        node:6.11.1 \
+        /bin/bash -c "npm install; npm install -g typescript gulp; gulp client.build:dist"
 
     echo "...Build complete"
    

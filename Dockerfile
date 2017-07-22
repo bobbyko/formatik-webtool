@@ -7,10 +7,12 @@ ENV appDir /srv/formatik/webtool
 RUN mkdir -p ${appDir}
 WORKDIR ${appDir}
 
-COPY . ${appDir}
+RUN npm install -g http-server
 
-RUN npm install
+COPY package.json ${appDir}
+
+RUN npm install --only=production
 
 COPY client/dist/. ${appDir}
 
-ENTRYPOINT ["dotnet", "Octagon.Formatik.API.dll"]
+CMD http-server -p 8000 -d false -i false --gzip true --cors -c3600
