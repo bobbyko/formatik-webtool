@@ -19,7 +19,7 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
     echo "Building Webtool..."
     docker run \
         --rm \
-        -v ~/formatik-webtool:/var/formatik-webtool \
+        -v ~/formatik/formatik-webtool:/var/formatik-webtool \
         -w /var/formatik-webtool \
         -c 512 \
         node:6.11.1 \
