@@ -5,6 +5,6 @@ unit_coverage
 client/dev/bower_components
 typings
 client/**/*.js
-client/dist/**
+client/dist
 
 !client/dev/config.js
