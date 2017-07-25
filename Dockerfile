@@ -15,4 +15,6 @@ RUN npm install --only=production
 
 COPY client/dist/. ${appDir}
 
-CMD http-server -p 8000 -d false -i false --gzip true --cors -c3600
+RUN 
+
+CMD http-server -p 8000 -d false --gzip true --cors -c3600

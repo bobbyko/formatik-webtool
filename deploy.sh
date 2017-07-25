@@ -13,9 +13,6 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
     
     git pull
 
-    # Restores need to be executed in every container. 
-    # Restores from prior containers or the host are not valid inside a new container
-    
     echo "Building Webtool..."
     docker run \
         --rm \
@@ -24,7 +21,7 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
         -c 512 \
         node:6.11.1 \
         /bin/bash -c "npm install; npm install -g typescript gulp; gulp client.build:dist"
-
+        
     echo "...Build complete"
    
     docker rmi octagon.formatik.webtool:old

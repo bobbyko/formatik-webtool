@@ -21,8 +21,8 @@ import "rxjs/add/operator/map";
 @Injectable()
 export class InstaFormatikService {
   static sessionId = UUID.UUID();
-  //static ENDPOINT: string = "http://107.170.236.236/api/v0.1";
-  static ENDPOINT: string = "http://localhost:5000/api/v0.1";
+  static ENDPOINT: string =  "http://107.170.236.236/api/v0.1";
+  //static ENDPOINT: string = "http://localhost:5000/api/v0.1";
   static apiUserId: string = "59092f5f99da28278a6ea211";
 
   constructor( @Inject(Http) private _http: Http) {
