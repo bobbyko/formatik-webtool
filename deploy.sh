@@ -51,7 +51,7 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
 
     echo "...webtool service updated"
 
-    curl -s --user 'webtool:key-0f66fb27e1d888d8d5cddaea7186b634' \
+    curl -s --user 'api:key-0f66fb27e1d888d8d5cddaea7186b634' \
         https://webtool.mailgun.net/v3/sandboxf5c90e4cf7524486831c10e8d6475ebd.mailgun.org/messages \
             -F from='Formatik01 <postmaster@sandboxf5c90e4cf7524486831c10e8d6475ebd.mailgun.org>' \
             -F to='Bobby Kotzev <bobby@octagonsolutions.co>' \
