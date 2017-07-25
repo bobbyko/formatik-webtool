@@ -6,7 +6,5 @@ client/dev/bower_components
 typings
 client/**/*.js
 client/dist/**
-*.tmp
 
 !client/dev/config.js
-!client/dist/index.ts

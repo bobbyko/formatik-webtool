@@ -16,6 +16,7 @@ export const tasks = {
   CLIENT_DEL_DIST: "client.del:dist",
 
   CLIENT_COPY: "client.copy",
+  CLIENT_PROD: "client.prod",
 
   CLIENT_UNIT_TEST: "client.unit_test",
   CLIENT_COVERAGE: "client.coverage",
