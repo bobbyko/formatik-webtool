@@ -4,8 +4,6 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background-color: #FFFFFF;
-  color: #333;  
 }
 
 .container-flex,
@@ -33,9 +31,17 @@
   width: 100%;
 }
 
-.page-header 
+.page-header,
+.page-footer
 {
-  margin-top: 0;
+  display: none;
+}
+
+textarea
+{
+  background-color: transparent;
+  color: #FFF;
+  border: solid 2px #FFF;
 }
 
 .spin

@@ -122,7 +122,7 @@ var InstaFormatikCmp = (function () {
         core_1.Component({
             selector: "insta-formatik-cmp",
             templateUrl: "insta-formatik/templates/insta-formatik.html",
-            styleUrls: ["insta-formatik/styles/insta-formatik.css"]
+            styleUrls: [location.hash === "#embedded" ? "insta-formatik/styles/embedded.css" : "insta-formatik/styles/insta-formatik.css"]
         }),
         __metadata("design:paramtypes", [insta_formatik_service_1.InstaFormatikService])
     ], InstaFormatikCmp);

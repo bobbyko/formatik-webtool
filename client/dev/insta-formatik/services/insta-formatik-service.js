@@ -41,8 +41,8 @@ var InstaFormatikService = (function () {
             .map(function (r) { return r.json(); });
     };
     InstaFormatikService.sessionId = angular2_uuid_1.UUID.UUID();
-    InstaFormatikService.ENDPOINT = "http://107.170.236.236/api/v0.1";
-    //static ENDPOINT: string = "http://localhost:5000/api/v0.1";
+    InstaFormatikService.ENDPOINT = "//api.formatik.io/v1.0";
+    //static ENDPOINT: string = "http://localhost:5000/v0.1";
     InstaFormatikService.apiUserId = "59092f5f99da28278a6ea211";
     InstaFormatikService = InstaFormatikService_1 = __decorate([
         core_1.Injectable(),

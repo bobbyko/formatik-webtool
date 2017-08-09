@@ -22,7 +22,7 @@ type InstaFormatik = {
 @Component({
   selector: "insta-formatik-cmp",
   templateUrl: "insta-formatik/templates/insta-formatik.html",
-  styleUrls: ["insta-formatik/styles/insta-formatik.css"]
+  styleUrls: [location.hash === "#embedded" ? "insta-formatik/styles/embedded.css" : "insta-formatik/styles/insta-formatik.css"]
 })
 
 export class InstaFormatikCmp implements OnInit {
