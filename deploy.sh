@@ -21,41 +21,52 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
         -c 512 \
         node:6.11.1 \
         /bin/bash -c "npm install; npm install -g typescript gulp; gulp client.build:dist"
-        
-    echo "...Build complete"
-   
-    docker rmi octagon.formatik.webtool:old
-    docker tag octagon.formatik.webtool:latest octagon.formatik.webtool:old
-    docker build --tag=octagon.formatik.webtool:latest .
 
-    echo "...image build complete"
+    if [[ $? == "0" ]]; then           
+        echo "...Build complete"
+    
+        docker rmi octagon.formatik.webtool:old
+        docker tag octagon.formatik.webtool:latest octagon.formatik.webtool:old
+        docker build --tag=octagon.formatik.webtool:latest .
 
-    echo "Updating webtool service..."
+        echo "...image build complete"
 
-    # For new swarms create service manually like this
-    # docker service create \
-    #     --network formatik_net \
-    #     --replicas 1 \
-    #     --constraint 'node.labels.webtool == true' \
-    #     --publish 8080:8000 \
-    #     --name webtool \
-    #     --hostname formatik-webtool \
-    #     octagon.formatik.webtool:latest
+        echo "Updating webtool service..."
 
-    #docker run --rm -ti -p 8000:8000 --name webtool-test octagon.formatik.webtool:latest
+        # For new swarms create service manually like this
+        # docker service create \
+        #     --network formatik_net \
+        #     --replicas 1 \
+        #     --constraint 'node.labels.webtool == true' \
+        #     --publish 8080:8000 \
+        #     --name webtool \
+        #     --hostname formatik-webtool \
+        #     octagon.formatik.webtool:latest
 
-    docker service update \
-        --image octagon.formatik.webtool:latest \
-        --force \
-        webtool
+        #docker run --rm -ti -p 8000:8000 --name webtool-test octagon.formatik.webtool:latest
 
-    echo "...webtool service updated"
+        docker service update \
+            --image octagon.formatik.webtool:latest \
+            --force \
+            webtool
 
-    curl -s --user 'api:key-0f66fb27e1d888d8d5cddaea7186b634' \
-        https://webtool.mailgun.net/v3/sandboxf5c90e4cf7524486831c10e8d6475ebd.mailgun.org/messages \
-            -F from='Formatik01 <postmaster@sandboxf5c90e4cf7524486831c10e8d6475ebd.mailgun.org>' \
-            -F to='Bobby Kotzev <bobby@octagonsolutions.co>' \
-            -F subject='Successfully updated Formatik Webtool' \
-            -F text='...using latest source from master branch'
+        echo "...webtool service updated"
+
+        curl -s --user 'api:key-0f66fb27e1d888d8d5cddaea7186b634' \
+            https://api.mailgun.net/v3/sandboxf5c90e4cf7524486831c10e8d6475ebd.mailgun.org/messages \
+                -F from='Formatik01 <postmaster@sandboxf5c90e4cf7524486831c10e8d6475ebd.mailgun.org>' \
+                -F to='Bobby Kotzev <bobby@octagonsolutions.co>' \
+                -F subject='Successfully updated Formatik WebTool' \
+                -F text='...using latest source from master branch'
+    else
+        echo "...Tests Failed"
+
+        curl -s --user 'api:key-0f66fb27e1d888d8d5cddaea7186b634' \
+            https://api.mailgun.net/v3/sandboxf5c90e4cf7524486831c10e8d6475ebd.mailgun.org/messages \
+                -F from='Formatik01 <postmaster@sandboxf5c90e4cf7524486831c10e8d6475ebd.mailgun.org>' \
+                -F to='Bobby Kotzev <bobby@octagonsolutions.co>' \
+                -F subject='Failed to update Formatik WebTool' \
+                -F text='...latest source from master branch failed validation'
+    fi                
 fi
 
