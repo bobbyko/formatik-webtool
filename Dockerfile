@@ -1,4 +1,4 @@
-FROM node:6.11.1
+FROM node:6.11.2
 MAINTAINER Bobby Kotzev
 
 ENV TZ=America/Los_Angeles
