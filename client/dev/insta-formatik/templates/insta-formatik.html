@@ -8,35 +8,37 @@
     <div class="row row-flex">
       <div class="col-md-6 padding col-flex">
         <div class="form-group input-group input-group-sm input-group-flex">
-          <div>
+          <div class="">
             <label for="userInput">Paste input or upload file</label>
-            <input class="btn pull-right" type="file" id="userFileInput" >
+            <input class="btn pull-right" type="file" id="userFileInput">
           </div>
-          <textarea id="userInput" class="form-control form-control-flex" [(ngModel)]="input" (onChange)="inputChanged()" placeholder="Enter Input" required></textarea>
+          <textarea id="userInput" class="form-control form-control-flex" [(ngModel)]="input" (onChange)="inputChanged()" placeholder="enter input"
+            required></textarea>
         </div>
       </div>
       <div class="col-md-6 padding col-flex">
         <div class="form-group input-group">
           <label for="userExample">Example</label>
-          <textarea class="form-control" id="userExample" [(ngModel)]="example" (onChange)="exampleChanged()" placeholder="Example" rows="3" required></textarea>
+          <textarea class="form-control" id="userExample" [(ngModel)]="example" (onChange)="exampleChanged()" placeholder="example"
+            rows="3" required></textarea>
         </div>
-        <div class="form-group input-group input-group-flex">
+        <div class="form-group input-group input-group-sm input-group-flex">
           <div>
             <label for="output">Output</label>
-            <button class="btn btn-sm pull-right" [ngClass]="{ 'btn-success': !evaluationInProgress, 'btn-danger' : evaluationInProgress }" (click)="evaluate()" [disabled]="!canEvaluate()" >
+            <button class="btn btn-sm pull-right" [ngClass]="{ 'btn-success': !evaluationInProgress, 'btn-danger' : evaluationInProgress }"
+              (click)="evaluate()" [disabled]="!canEvaluate()">
               <span class="glyphicon glyphicon-refresh" [ngClass]="{ 'spin': evaluationInProgress }" aria-hidden="true"></span>
             </button>
           </div>
           <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="error">
             <button type="button" class="close" (click)="error=null" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>SNAP!</strong> API call failed: <br/>
-            {{error}}
+            <strong>SNAP!</strong> API call failed: <br/> {{error}}
           </div>
           <div class="alert alert-warning alert-dismissible" role="alert" *ngIf="!error && warning">
-            <button type="button" class="close" (click)="error=null" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            {{warning}}
+            <button type="button" class="close" (click)="error=null" aria-label="Close"><span aria-hidden="true">&times;</span></button>            {{warning}}
           </div>
-          <textarea class="form-control form-control-flex" id="output" placeholder="Output" [value]="getProcessed()" readonly></textarea>
+          <textarea class="form-control form-control-flex" id="output" placeholder="output" [value]="getProcessed()"
+            readonly></textarea>
         </div>
       </div>
     </div>

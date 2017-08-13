@@ -44,6 +44,24 @@ textarea
   border: solid 2px #FFF;
 }
 
+textarea::-webkit-input-placeholder
+{
+  color: #ccc;
+  font-style: italic;
+}
+
+.form-control[disabled],
+.form-control[readonly]
+{
+  background: rgba(255,255,255,0.2);
+}
+
+.form-control:focus
+{
+  border: solid 2px #FFF;
+  box-shadow: none;
+}
+
 .spin
 {
     animation-name: spin;
