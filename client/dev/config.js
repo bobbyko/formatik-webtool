@@ -23,5 +23,6 @@ System.config({
     'rxjs':                       'npm:rxjs',
     'bootstrap':                  'npm:bootstrap/dist/js/bootstrap.min.js',
     'angular2-uuid':              'npm:angular2-uuid/index.js',
+    'ts-clipboard':               'node_modules/ts-clipboard/ts-clipboard.js',
   }
 });

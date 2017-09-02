@@ -1,18 +1,7 @@
-import {
-  Component,
-  Input,
-  OnInit
-} from "@angular/core";
+import { Component } from "@angular/core";
+import { Clipboard } from "ts-clipboard";
 
-import {
-  Validators,
-  FormGroup,
-  FormControl
-} from "@angular/forms";
-
-import {
-  InstaFormatikService
-} from "../services/insta-formatik-service";
+import { InstaFormatikService } from "../services/insta-formatik-service";
 
 type InstaFormatik = {
   instaformatikMessage: string;
@@ -25,22 +14,19 @@ type InstaFormatik = {
   styleUrls: [location.hash === "#embedded" ? "insta-formatik/styles/embedded.css" : "insta-formatik/styles/insta-formatik.css"]
 })
 
-export class InstaFormatikCmp implements OnInit {
-  @Input() input: string;
-  @Input() example: string;
+export class InstaFormatikCmp {
+  public input: string;
+  public example: string;
 
-  inputCacheId: string;
-  evaluationInProgress: boolean;
-  evaluation: any;
-  processed: any;
-  error: any;
-  warning: string;
+  public inputCacheId: string;
+  public evaluationInProgress: boolean;
+  public evaluation: any;
+  public processed: any;
+  public error: any;
+  public warning: string;
 
   constructor(private _instaFormatikService: InstaFormatikService) {
     this.evaluationInProgress = false;
-  }
-
-  ngOnInit() {
   }
 
   canEvaluate(): Boolean {
@@ -82,8 +68,7 @@ export class InstaFormatikCmp implements OnInit {
           this.process();
         }
         else {
-          switch (evaluation.errorCode)
-          {
+          switch (evaluation.errorCode) {
             case "InputCacheNotFound":
               this.inputCacheId = null;
               this.evaluate();
@@ -122,8 +107,7 @@ export class InstaFormatikCmp implements OnInit {
             this.processed = processed;
           }
           else {
-            switch (processed.errorCode)
-            {
+            switch (processed.errorCode) {
               case "InputCacheNotFound":
                 this.inputCacheId = null;
                 this.process();
