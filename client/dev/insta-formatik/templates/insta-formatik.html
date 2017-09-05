@@ -8,7 +8,7 @@
     <div class="row row-flex">
       <div class="col-md-6 padding col-flex">
         <div class="form-group input-group input-group-sm input-group-flex ">
-          <textarea id="userInput" class="form-control form-control-flex" [(ngModel)]="input" (onChange)="inputChanged()" required></textarea>
+          <textarea id="userInput" class="form-control form-control-flex" [(ngModel)]="input" (ngModelChange)="inputChanged()" required></textarea>
           <div class="panel floater">
             <input id="fileUpload" class="hidden" type="file" id="userFileInput"> Input&nbsp;
             <button class="btn btn-sm btn-primary" (click)="fileUpload.click()" title="Upload Input...">
@@ -19,7 +19,7 @@
       </div>
       <div class="col-md-6 padding col-flex">
         <div class="form-group input-group">
-          <textarea class="form-control" id="userExample" [(ngModel)]="example" (onChange)="exampleChanged()" rows="3" required></textarea>
+          <textarea class="form-control" id="userExample" [(ngModel)]="example" (ngModelChange)="exampleChanged()" rows="3" required></textarea>
           <div class="panel floater">
             Example
           </div>

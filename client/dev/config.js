@@ -24,5 +24,6 @@ System.config({
     'bootstrap':                  'npm:bootstrap/dist/js/bootstrap.min.js',
     'angular2-uuid':              'npm:angular2-uuid/index.js',
     'ts-clipboard':               'node_modules/ts-clipboard/ts-clipboard.js',
+    'ts-md5':                     'node_modules/ts-md5/dist/md5.js',
   }
 });
