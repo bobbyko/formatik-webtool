@@ -32,6 +32,9 @@
               <span *ngIf="evaluationInProgress" class="glyphicon glyphicon-refresh spin" aria-hidden="true"></span>
               <span *ngIf="!evaluationInProgress" class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span>
             </button>
+            <label id="autoprocess" class="pull-right">
+              <input type="checkbox" [(ngModel)]="autoevaluate"> auto-process
+            </label>
           </div>
           <br/>
           <div class="alert alert-danger alert-dismissible" role="alert" *ngIf="error">

@@ -58,6 +58,13 @@
   padding: 5px 10px;
 }
 
+#autoprocess {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 6px;
+}
+
 @keyframes spin {
     from {
         transform:rotate(0deg);

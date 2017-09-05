@@ -5,7 +5,7 @@ import { Http } from "@angular/http";
 import { UUID } from 'angular2-uuid';
 import { Md5 } from 'ts-md5';
 
-import "rxjs/add/operator/map";
+import "rxjs/add/operator/map";import "rxjs/add/operator/map";
 
 @Injectable()
 export class InstaFormatikService {

@@ -1,6 +1,12 @@
 import { Component } from "@angular/core";
 import { Clipboard } from "ts-clipboard";
 
+import { Subject } from "rxjs/Subject";
+
+import "rxjs/add/operator/debounceTime";
+import "rxjs/add/operator/distinctUntilChanged";
+import "rxjs/add/operator/startWith";
+
 import { InstaFormatikService } from "../services/insta-formatik-service";
 
 type InstaFormatik = {
@@ -17,6 +23,7 @@ type InstaFormatik = {
 export class InstaFormatikCmp {
   public input: string;
   public example: string;
+  public autoevaluate: boolean;
 
   public inputCacheId: string;
   public evaluationInProgress: boolean;
@@ -25,8 +32,32 @@ export class InstaFormatikCmp {
   public error: any;
   public warning: string;
 
+  public inputChange: Subject<string>;
+  public exampleChange: Subject<string>;
+
   constructor(private _instaFormatikService: InstaFormatikService) {
     this.evaluationInProgress = false;
+    this.autoevaluate = true;
+
+    this.inputChange = new Subject<string>();
+    this.exampleChange = new Subject<string>();
+
+    this.inputChange
+      .debounceTime(1000)
+      .subscribe(() => {
+        if (this.autoevaluate && this.canEvaluate())
+          this.evaluate();
+      });
+
+    this.exampleChange
+      .debounceTime(1000)
+      .subscribe(() => {
+        if (this.autoevaluate && this.canEvaluate())
+          if (this.evaluation)
+            this.process();
+          else
+            this.evaluate();
+      });
   }
 
   canEvaluate(): Boolean {
@@ -41,6 +72,9 @@ export class InstaFormatikCmp {
     this.processed = null;
     this.error = null;
     this.warning = null;
+
+    this.inputChange.next(this.input);
+    this.exampleChange.next(this.evaluation);
   }
 
   exampleChanged(): void {
@@ -48,6 +82,8 @@ export class InstaFormatikCmp {
     this.processed = null;
     this.error = null;
     this.warning = null;
+
+    this.exampleChange.next(this.evaluation);
   }
 
   evaluate(): void {
