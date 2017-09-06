@@ -25,5 +25,20 @@ System.config({
     'angular2-uuid':              'npm:angular2-uuid/index.js',
     'ts-clipboard':               'node_modules/ts-clipboard/ts-clipboard.js',
     'ts-md5':                     'node_modules/ts-md5/dist/md5.js',
-  }
+    'angulartics2':               'npm:angulartics2/dist/core.umd.js',
+    'ngx-cookie':                 'npm:ngx-cookie'
+  },
+  packages: {
+      app: {
+        main: './main.js',
+        defaultExtension: 'js'
+      },
+      rxjs: {
+        defaultExtension: 'js'
+      },
+      'ngx-cookie': {
+        main: './index.js',
+        defaultExtension: 'js'
+      }
+    }
 });
