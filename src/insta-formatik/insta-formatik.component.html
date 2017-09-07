@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <div class="page-header">
+    <h1>
+      Insta-Formatik <small>a data transformation web tool</small>
+    </h1>
+  </div>
+  <div class="container-flex">
+    <div class="row row-flex">
+      <div class="col-md-6 padding col-flex">
+        <div class="form-group input-group input-group-sm input-group-flex ">
+          <textarea id="userInput" class="form-control form-control-flex" [(ngModel)]="input" (ngModelChange)="inputChanged()" required></textarea>
+          <div class="panel floater">
+            <input id="fileUpload" class="hidden" type="file"> Input&nbsp;
+            <button class="btn btn-sm btn-primary" (click)="upload()" title="Upload Input">
+                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 padding col-flex">
+        <div class="form-group input-group">
+          <textarea class="form-control" id="userExample" [(ngModel)]="example" (ngModelChange)="exampleChanged()" rows="3" required></textarea>
+          <div class="panel floater">
+            Example
+          </div>
+        </div>
+        <div class="form-group input-group input-group-sm input-group-flex">
+          <div class="center-block">
+            <button class="btn btn-md pull-right" [ngClass]="{ 'btn-success': !evaluationInProgress, 'btn-danger' : evaluationInProgress }"
+              (click)="evaluate()" [disabled]="!canEvaluate()">
+              PROCESS&nbsp;
+              <span *ngIf="evaluationInProgress" class="glyphicon glyphicon-refresh spin" aria-hidden="true"></span>
+              <span *ngIf="!evaluationInProgress" class="glyphicon glyphicon-circle-arrow-down" aria-hidden="true"></span>
+            </button>
+            <label id="autoprocess" class="pull-right">
+              <input type="checkbox" [(ngModel)]="autoevaluate"> auto-process
+            </label>
+          </div>
+          <br/>
+          <div class="input-group-flex" style="position: relative">
+            <textarea class="form-control form-control-flex" id="output" [value]="getProcessed()" readonly></textarea>
+            <div class="panel floater">
+              Output&nbsp;
+              <button class="btn btn-sm btn-primary" (click)="copy()" title="Copy to clipboard" [disabled]="evaluationInProgress || !getProcessed()">
+                  <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    Copyright 2017. Octagon Solutions
+  </div>
+  <div toastContainer></div>
+</div>

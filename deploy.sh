@@ -19,10 +19,10 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
         -v ~/formatik/formatik-webtool:/var/formatik-webtool \
         -w /var/formatik-webtool \
         -c 512 \
-        node:6.11.1 \
-        /bin/bash -c "npm install; npm install -g typescript gulp; gulp client.build:dist"
+        teracy/angular-cli:1.0.0 \
+        /bin/bash -c "ng build -prod --output-path dist"
 
-    if [[ $? == "0" ]]; then           
+    if [[ $? == "0" ]]; then
         echo "...Build complete"
     
         docker rmi octagon.formatik.webtool:old
