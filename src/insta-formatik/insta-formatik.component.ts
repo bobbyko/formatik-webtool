@@ -15,14 +15,13 @@ import { InstaFormatikService } from './insta-formatik.service';
 @Component({
   selector: 'insta-formatik',
   templateUrl: './insta-formatik.component.html',
-  styleUrls: [
-    location.hash === '#embedded' ? './embedded.css' : './insta-formatik.css',
-  ]
+  styleUrls: ['insta-formatik.css']
 })
 
 export class InstaFormatikComponent {
   @ViewChild('fileUpload')
   public fileUpload: any;
+  public isEmbedded: boolean;
 
   public input: string;
   public example: string;
@@ -41,6 +40,8 @@ export class InstaFormatikComponent {
     private _instaFormatikService: InstaFormatikService,
     private angulartics2Mixpanel: Angulartics2Mixpanel,
   ) {
+    this.isEmbedded = location.hash === '#embedded';
+
     this.evaluationInProgress = false;
     this.autoevaluate = true;
 

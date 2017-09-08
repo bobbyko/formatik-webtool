@@ -73,3 +73,44 @@
         transform:rotate(360deg);
     }
 }
+
+.embedded.container-fluid
+{
+  background-color: inherit;
+  color: inherit;
+}
+
+.embedded .page-header,
+.embedded .page-footer
+{
+  display: none;
+}
+
+.embedded textarea
+{
+  background-color: transparent;
+  color: #FFF;
+  border: solid 2px #FFF;
+}
+
+.embedded textarea::-webkit-input-placeholder
+{
+  color: #ccc;
+  font-style: italic;
+}
+
+.embedded .form-control[disabled],
+.embedded .form-control[readonly]
+{
+  background: rgba(255,255,255,0.2);
+}
+
+.embedded .form-control:focus
+{
+  border: solid 2px #FFF;
+  box-shadow: none;
+}
+
+.embedded .floater.panel {
+  color: #000;
+}
