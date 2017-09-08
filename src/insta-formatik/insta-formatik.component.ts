@@ -182,7 +182,7 @@ export class InstaFormatikComponent {
   }
 
   getProcessed(): string {
-    return this.processed && this.processed.status === 'OK' ? this.processed.result : null;
+    return this.processed && this.processed.status === 'OK' ? this.processed.result : '';
   }
 
   upload(): void {
