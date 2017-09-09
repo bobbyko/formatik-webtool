@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RouterModule } from '@angular/router';
+import { RouterModule, DefaultUrlSerializer } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { InstaFormatikComponent } from './insta-formatik.component';
@@ -16,6 +16,11 @@ import { CookieModule } from 'ngx-cookie';
 import { ToastrModule } from 'ngx-toastr';
 import { AlertModule } from 'ngx-bootstrap';
 
+const nextYear = (() => {
+  const date = new Date();
+  date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
+  return date;
+})();
 
 @NgModule({
   declarations: [
@@ -29,7 +34,8 @@ import { AlertModule } from 'ngx-bootstrap';
     BrowserAnimationsModule,
     Angulartics2Module.forRoot([Angulartics2Mixpanel]),
     CookieModule.forRoot({
-      domain: 'formatik.io'
+      domain: 'formatik.io',
+      expires: nextYear
     }),
     ToastrModule.forRoot({
       timeOut: 7000,
@@ -39,7 +45,7 @@ import { AlertModule } from 'ngx-bootstrap';
     }),
     AlertModule.forRoot()
   ],
-  providers: [InstaFormatikService],
+  providers: [DefaultUrlSerializer, InstaFormatikService],
   bootstrap: [InstaFormatikComponent]
 })
 export class InstaFormatikModule { }

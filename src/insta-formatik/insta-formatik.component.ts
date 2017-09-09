@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { DefaultUrlSerializer } from '@angular/router';
 import { Clipboard } from 'ts-clipboard';
 
 import { Subject } from 'rxjs/Subject';
@@ -9,6 +10,7 @@ import 'rxjs/add/operator/startWith';
 
 import { Angulartics2Mixpanel } from 'angulartics2';
 import { ToastrService } from 'ngx-toastr';
+import { CookieService } from 'ngx-cookie';
 
 import { InstaFormatikService } from './insta-formatik.service';
 
@@ -39,6 +41,8 @@ export class InstaFormatikComponent {
     private toastr: ToastrService,
     private _instaFormatikService: InstaFormatikService,
     private angulartics2Mixpanel: Angulartics2Mixpanel,
+    private cookie: CookieService,
+    private urlSerializer: DefaultUrlSerializer
   ) {
     this.isEmbedded = location.hash === '#embedded';
 
@@ -67,6 +71,22 @@ export class InstaFormatikComponent {
           }
         }
       });
+
+    // set user tracking
+    const url = urlSerializer.parse(window.parent ? window.parent.location.href : location.href);
+    const bt_userId = url.queryParams['bt'];
+
+    let userId = this.cookie.get('userId');
+
+    if (bt_userId && (!userId || userId !== bt_userId)) {
+      userId = bt_userId;
+      this.cookie.put('userId', userId);
+    } else if (!bt_userId && !userId) {
+      userId = Math.floor(Math.random() * 1000000000).toString();
+      this.cookie.put('userId', userId);
+    }
+
+    this.angulartics2Mixpanel.setUsername(userId);
   }
 
   canEvaluate(): Boolean {
