@@ -16,12 +16,6 @@ import { CookieModule } from 'ngx-cookie';
 import { ToastrModule } from 'ngx-toastr';
 import { AlertModule } from 'ngx-bootstrap';
 
-const nextYear = (() => {
-  const date = new Date();
-  date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-  return date;
-})();
-
 @NgModule({
   declarations: [
     InstaFormatikComponent
@@ -35,7 +29,7 @@ const nextYear = (() => {
     Angulartics2Module.forRoot([Angulartics2Mixpanel]),
     CookieModule.forRoot({
       domain: 'formatik.io',
-      expires: nextYear
+      expires: new Date('1/1/2020')
     }),
     ToastrModule.forRoot({
       timeOut: 7000,
