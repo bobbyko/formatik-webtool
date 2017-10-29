@@ -5,12 +5,12 @@ import { Http } from "@angular/http";
 import { UUID } from 'angular2-uuid';
 import { Md5 } from 'ts-md5/dist/md5';
 
-import "rxjs/add/operator/map";import "rxjs/add/operator/map";
+import "rxjs/add/operator/map";
 
 @Injectable()
 export class InstaFormatikService {
-  static ENDPOINT: string =  "https://api.formatik.io/v1.0";
-  //static ENDPOINT: string = "http://localhost:5000/v1.0";
+  static ENDPOINT: string =  "//api.formatik.io/v1.0";
+  //static ENDPOINT: string = "//localhost:5000/v1.0";
   static apiUserId: string = "59092f5f99da28278a6ea211";
 
   private inputCacheHashes: any = {};

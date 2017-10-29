@@ -72,8 +72,8 @@
 textarea
 {
   background-color: transparent;
-  color: #FFF;
-  border: solid 2px #FFF;
+  color: #555;
+  border: solid 2px #555;
 }
 
 .floater.panel {
@@ -82,7 +82,7 @@ textarea
 
 .form-control:focus
 {
-  border: solid 2px #FFF;
+  border: solid 2px #555;
   box-shadow: none;
 }
 

@@ -47,7 +47,7 @@ export class InstaFormatikComponent {
     this.isEmbedded = location.hash === '#embedded';
 
     this.evaluationInProgress = false;
-    this.autoevaluate = true;
+    this.autoevaluate = false;
 
     this.inputChange = new Subject<string>();
     this.exampleChange = new Subject<string>();
