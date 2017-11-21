@@ -20,7 +20,7 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
         -w /var/formatik-webtool \
         -c 512 \
         node:8.9.1 \
-        /bin/bash -c "npm install; npm install -g typescript @angular/cli; ng build -prod --output-path dist"
+        /bin/bash -c "npm install; npm run build -- -prod --output-path dist"
 
     if [[ $? == "0" ]]; then           
         echo "...Build complete"

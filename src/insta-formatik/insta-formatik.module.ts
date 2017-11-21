@@ -11,7 +11,8 @@ import { InstaFormatikService } from './insta-formatik.service';
 
 // 3rd party modules
 import { Md5 } from 'ts-md5/dist/md5';
-import { Angulartics2Module, Angulartics2Mixpanel } from 'angulartics2';
+import { Angulartics2Module} from 'angulartics2';
+import { Angulartics2Mixpanel } from 'angulartics2/mixpanel';
 import { CookieModule } from 'ngx-cookie';
 import { ToastrModule } from 'ngx-toastr';
 import { AlertModule } from 'ngx-bootstrap';

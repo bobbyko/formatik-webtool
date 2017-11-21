@@ -11,7 +11,7 @@ import 'rxjs/add/operator/startWith';
 
 import { InstaFormatikService } from './insta-formatik.service';
 
-import { Angulartics2Mixpanel } from 'angulartics2';
+import { Angulartics2Mixpanel } from 'angulartics2/mixpanel';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie';
 import { NgProgress } from 'ngx-progressbar';
