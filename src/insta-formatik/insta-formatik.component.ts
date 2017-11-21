@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { DefaultUrlSerializer } from '@angular/router';
 import { Clipboard } from 'ts-clipboard';
+import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
 
 import { Subject } from 'rxjs/Subject';
 
@@ -8,26 +9,32 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/startWith';
 
+import { InstaFormatikService } from './insta-formatik.service';
+
 import { Angulartics2Mixpanel } from 'angulartics2';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie';
-
-import { InstaFormatikService } from './insta-formatik.service';
+import { NgProgress } from 'ngx-progressbar';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'insta-formatik',
-  templateUrl: './insta-formatik.component.html',
-  styleUrls: ['insta-formatik.css']
+  styleUrls: ['insta-formatik.css'],
+  templateUrl: './insta-formatik.component.html'
 })
 
-export class InstaFormatikComponent {
-  @ViewChild('fileUpload')
-  public fileUpload: any;
+export class InstaFormatikComponent implements OnInit {
+  public uploader: FileUploader;
+
   public isEmbedded: boolean;
 
   public input: string;
   public example: string;
   public autoevaluate: boolean;
+  public inputFormat: string;
+  public size: number;
+  public records: number;
+  public trunkated: boolean;
 
   public inputCacheId: string;
   public evaluationInProgress: boolean;
@@ -39,15 +46,23 @@ export class InstaFormatikComponent {
 
   constructor(
     private toastr: ToastrService,
-    private _instaFormatikService: InstaFormatikService,
+    private instaFormatikService: InstaFormatikService,
     private angulartics2Mixpanel: Angulartics2Mixpanel,
     private cookie: CookieService,
-    private urlSerializer: DefaultUrlSerializer
+    private urlSerializer: DefaultUrlSerializer,
+    public ngProgress: NgProgress,
   ) {
-    this.isEmbedded = location.hash === '#embedded';
-
     this.evaluationInProgress = false;
     this.autoevaluate = false;
+  }
+
+  ngOnInit() {
+    this.isEmbedded = location.hash === '#embedded';
+
+    this.uploader = new FileUploader({ url: this.instaFormatikService.GetUploadUrl() });
+    this.uploader.onCompleteItem = this.uploadComplete;
+    this.uploader.onErrorItem = this.uploadError;
+    (this.uploader as any).parent = this;
 
     this.inputChange = new Subject<string>();
     this.exampleChange = new Subject<string>();
@@ -73,7 +88,7 @@ export class InstaFormatikComponent {
       });
 
     // set user tracking
-    const url = urlSerializer.parse(window.parent ? window.parent.location.href : location.href);
+    const url = this.urlSerializer.parse(window.parent ? window.parent.location.href : location.href);
     const bt_userId = url.queryParams['bt'];
 
     let userId = this.cookie.get('userId');
@@ -96,17 +111,17 @@ export class InstaFormatikComponent {
   }
 
   inputChanged(): void {
-    this.inputCacheId = null;
-    this.evaluation = null;
-    this.processed = null;
+    this.inputCacheId = undefined;
+    this.evaluation = undefined;
+    this.processed = undefined;
 
     this.inputChange.next(this.input);
     this.exampleChange.next(this.evaluation);
   }
 
   exampleChanged(): void {
-    this.evaluation = null;
-    this.processed = null;
+    this.evaluation = undefined;
+    this.processed = undefined;
 
     this.exampleChange.next(this.evaluation);
   }
@@ -114,11 +129,11 @@ export class InstaFormatikComponent {
   evaluate(): void {
     this.evaluationInProgress = true;
 
-    this._instaFormatikService
-      .evaluate(this.inputCacheId ? null : this.input, this.inputCacheId, this.example)
+    this.instaFormatikService
+      .evaluate(this.inputCacheId ? undefined : this.input, this.inputCacheId, this.example)
       .subscribe(
       (evaluation) => {
-        this.processed = null;
+        this.processed = undefined;
 
         if (evaluation.status === 'OK') {
           if (this.inputCacheId !== evaluation.inputCacheId) {
@@ -126,25 +141,36 @@ export class InstaFormatikComponent {
           }
 
           this.evaluation = evaluation;
+          this.inputFormat = evaluation.formatik.inputFormat;
+          this.size = evaluation.formatik.inputSize;
+          this.records = evaluation.formatik.inputRecords;
+          this.trunkated = false;
           this.process();
         } else {
           switch (evaluation.errorCode) {
             case 'InputCacheNotFound':
-              this.inputCacheId = null;
+              this.inputCacheId = undefined;
               this.evaluate();
               break;
 
             default:
-              this.evaluation = null;
+              this.evaluation = undefined;
               this.evaluationInProgress = false;
+              this.inputFormat = evaluation.InputFormat;
+              this.size = undefined;
+              this.records = undefined;
+              this.trunkated = undefined;
               this.toastr.warning(evaluation.error);
               break;
           }
         }
       },
       (error) => {
-        this.evaluation = null;
+        this.evaluation = undefined;
         this.evaluationInProgress = false;
+        this.size = undefined;
+        this.records = undefined;
+        this.trunkated = undefined;
         this.toastr.error(error);
       });
   }
@@ -153,8 +179,8 @@ export class InstaFormatikComponent {
     this.evaluationInProgress = true;
 
     if (this.evaluation.formatId) {
-      this._instaFormatikService
-        .process(this.evaluation.formatId, this.inputCacheId ? null : this.input, this.inputCacheId)
+      this.instaFormatikService
+        .process(this.evaluation.formatId, this.inputCacheId ? undefined : this.input, this.inputCacheId)
         .subscribe((processed) => {
 
           if (processed.status === 'OK') {
@@ -164,17 +190,27 @@ export class InstaFormatikComponent {
 
             this.evaluationInProgress = false;
             this.processed = processed;
+            this.size = processed.inputSize;
+            this.records = processed.processedRecords;
+            this.trunkated = processed.trunkated;
+
+            if (this.processed.processedRecords === 10000) {
+              this.toastr.warning('Record limit reached. Only the first 10K records were processed. Please subscribe to unlock unlimited record processing');
+            }
 
             this.angulartics2Mixpanel.eventTrack('process', { success: true });
           } else {
             switch (processed.errorCode) {
               case 'InputCacheNotFound':
-                this.inputCacheId = null;
+                this.inputCacheId = undefined;
                 this.process();
                 break;
 
               default:
-                this.processed = null;
+                this.processed = undefined;
+                this.size = undefined;
+                this.records = undefined;
+                this.trunkated = undefined;
                 this.evaluationInProgress = false;
                 this.toastr.warning(processed.error);
                 this.angulartics2Mixpanel.eventTrack('process', { success: false, error: processed.error });
@@ -183,13 +219,19 @@ export class InstaFormatikComponent {
           }
         },
         (error) => {
-          this.processed = null;
+          this.processed = undefined;
+          this.size = undefined;
+          this.records = undefined;
+          this.trunkated = undefined;
           this.evaluationInProgress = false;
           this.toastr.error(error);
           this.angulartics2Mixpanel.eventTrack('process', { success: false, error: error });
         });
     } else {
-      this.processed = null;
+      this.processed = undefined;
+      this.size = undefined;
+      this.records = undefined;
+      this.trunkated = undefined;
     }
   }
 
@@ -206,6 +248,39 @@ export class InstaFormatikComponent {
   }
 
   upload(): void {
-    this.fileUpload.click();
+    this.uploader.uploadAll();
+  }
+
+  uploadComplete(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): void {
+    const _this = ((this as any).parent as InstaFormatikComponent);
+
+    _this.evaluation = undefined;
+    _this.processed = undefined;
+
+    const responseObj = JSON.parse(response);
+    _this.inputCacheId = responseObj.inputCacheId;
+    _this.inputFormat = responseObj.inputFormat;
+    _this.size = responseObj.size;
+    _this.records = responseObj.records;
+    _this.input = responseObj.input;
+  }
+
+  uploadError(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): void {
+    const _this = ((this as any).parent as InstaFormatikComponent);
+    _this.toastr.error('Error uploading file: Service responded with error');
+  }
+
+  getSizeLabel(): string {
+    if (this.size) {
+      if (this.size > 1048576) {
+        return Math.round(this.size / 1048576) + ' MB';
+      } else if (this.size > 1024) {
+        return Math.round(this.size / 1024) + ' KB';
+      } else {
+        return this.size + ' B';
+      }
+    } else {
+      return undefined;
+    }
   }
 }

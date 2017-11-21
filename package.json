@@ -26,8 +26,10 @@
     "angulartics2": "^3.2.0",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "ng2-file-upload": "^1.2.1",
     "ngx-bootstrap": "^1.9.3",
     "ngx-cookie": "^1.0.0",
+    "ngx-progressbar": "^2.1.1",
     "ngx-toastr": "^6.5.0",
     "rxjs": "^5.4.2",
     "ts-clipboard": "^1.0.15",
@@ -52,7 +54,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
-    "tslint": "~5.7.0",
+    "tslint": "^5.8.0",
     "typescript": "~2.3.3"
   }
 }

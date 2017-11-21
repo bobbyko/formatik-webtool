@@ -1,3 +1,4 @@
+<ng-progress [showSpinner]="false" [color]="'#FFBC49'" [toggle]="uploader.isUploading || evaluationInProgress"></ng-progress>
 <div class="container-fluid" [ngClass]="{ embedded: isEmbedded }">
   <div class="page-header">
     <h1>
@@ -10,10 +11,22 @@
         <div class="form-group input-group input-group-sm input-group-flex ">
           <textarea id="userInput" class="form-control form-control-flex" [(ngModel)]="input" (ngModelChange)="inputChanged()" required></textarea>
           <div class="panel floater">
-            <input id="fileUpload" class="hidden" type="file"> Input&nbsp;
-            <button class="btn btn-sm btn-primary" (click)="upload()" title="Upload Input">
-                <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
-            </button>
+            Input&nbsp;
+            <label class="btn btn-sm btn-primary" title="Upload Input" for="userFileUpload">
+              <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+            </label>
+            <input id="userFileUpload" class="hidden" type="file" ng2FileSelect [uploader]="uploader" (change)="upload()">
+            <div *ngIf="inputFormat">
+              <div class="clearfloat">
+                <span class="pull-right">{{inputFormat}}</span>
+              </div>
+              <div class="clearfloat">
+                <span class="pull-right">{{getSizeLabel()}}</span>
+              </div>
+              <div class="clearfloat">
+                <span class="pull-right">{{records}} Rec</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -42,8 +55,11 @@
             <div class="panel floater">
               Output&nbsp;
               <button class="btn btn-sm btn-primary" (click)="copy()" title="Copy to clipboard" [disabled]="evaluationInProgress || !getProcessed()">
-                  <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
               </button>
+              <div class="clearfloat" *ngIf="trunkated">
+                  <span class="pull-right">Trunkated</span>
+              </div>
             </div>
           </div>
         </div>

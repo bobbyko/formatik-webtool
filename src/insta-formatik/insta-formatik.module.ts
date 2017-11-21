@@ -15,6 +15,8 @@ import { Angulartics2Module, Angulartics2Mixpanel } from 'angulartics2';
 import { CookieModule } from 'ngx-cookie';
 import { ToastrModule } from 'ngx-toastr';
 import { AlertModule } from 'ngx-bootstrap';
+import { FileUploadModule } from 'ng2-file-upload';
+import { NgProgressModule } from 'ngx-progressbar';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { AlertModule } from 'ngx-bootstrap';
       preventDuplicates: true,
       closeButton: true
     }),
-    AlertModule.forRoot()
+    AlertModule.forRoot(),
+    FileUploadModule,
+    NgProgressModule,
   ],
   providers: [DefaultUrlSerializer, InstaFormatikService],
   bootstrap: [InstaFormatikComponent]

@@ -19,7 +19,7 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
         -v ~/formatik/formatik-webtool:/var/formatik-webtool \
         -w /var/formatik-webtool \
         -c 512 \
-        node:6.11.5 \
+        node:8.9.1 \
         /bin/bash -c "npm install; npm install -g typescript @angular/cli; ng build -prod --output-path dist"
 
     if [[ $? == "0" ]]; then           

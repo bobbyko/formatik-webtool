@@ -51,7 +51,7 @@
 
 .floater.panel {
   position: absolute;
-  margin: 10px;
+  margin: 10px 20px;
   opacity: 0.5;
   right: 0;
   top: 0;
@@ -59,6 +59,26 @@
   background-color: #ddd;
   text-transform: uppercase;
   padding: 5px 10px;
+  color: #000;
+}
+
+.floater2.panel {
+  position: absolute;
+  margin: 10px 20px;
+  opacity: 0.5;
+  right: 0;
+  top: 45px;
+  z-index: 10;
+  background-color: #ddd;
+  text-transform: uppercase;
+  padding: 5px 10px;
+}
+
+.floater.panel:hover,
+.floater.panel:active,
+.floater2.panel:hover,
+.floater2.panel:active {
+  opacity: 0.9  ;
 }
 
 #autoprocess {
@@ -75,10 +95,6 @@ textarea
   border: solid 2px #555;
 }
 
-.floater.panel {
-  color: #000;
-}
-
 .form-control:focus
 {
   border: solid 2px #555;
@@ -89,6 +105,10 @@ textarea::-webkit-input-placeholder
 {
   color: #ccc;
   font-style: italic;
+}
+
+.clearfloat {
+  clear: both;
 }
 
 .form-control[disabled],
