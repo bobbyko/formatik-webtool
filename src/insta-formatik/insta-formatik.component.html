@@ -1,8 +1,16 @@
 <ng-progress [showSpinner]="false" [color]="'#FFBC49'" [toggle]="uploader.isUploading || evaluationInProgress"></ng-progress>
 <div class="container-fluid" [ngClass]="{ embedded: isEmbedded }">
   <div class="page-header">
+    <div class="panel">
+      <a class="pull-right" href="https://www.youtube.com/watch?v=77agyFmjm2c" target="_blank">
+        Watch Demo
+        <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
+      </a>
+    </div>
     <h1>
-      <img src="assets/formatik-logo.png" class="headerLogo"> Webtool
+      <a href="//www.formatik.io/">
+        <img src="assets/formatik-logo.png" class="headerLogo"> Webtool
+      </a>
     </h1>
   </div>
   <div class="container-flex">
@@ -58,7 +66,7 @@
                 <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
               </button>
               <div class="clearfloat" *ngIf="trunkated">
-                  <span class="pull-right">Trunkated</span>
+                <span class="pull-right">Trunkated</span>
               </div>
             </div>
           </div>

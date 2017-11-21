@@ -6,6 +6,10 @@
   align-items: stretch;
 }
 
+h1:hover {
+  text-decoration: none;
+}
+
 .headerLogo
 {
   height: 50px;
