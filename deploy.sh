@@ -24,6 +24,10 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
 
     if [[ $? == "0" ]]; then           
         echo "...Build complete"
+
+        find . -type f -name '*.js' -exec gzip "{}" -k -9 \;
+        find . -type f -name '*.css' -exec gzip "{}" -k -9 \;
+        find . -type f -name '*.html' -exec gzip "{}" -k -9 \;
     
         docker rmi octagon.formatik.webtool:old
         docker tag octagon.formatik.webtool:latest octagon.formatik.webtool:old
