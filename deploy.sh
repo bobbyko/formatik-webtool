@@ -25,7 +25,7 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
     if [[ $? == "0" ]]; then           
         echo "...Build complete"
 
-        find . -type f ! -name '*.gz' -exec gzip "{}" -k -9 \;
+        find dist/. -type f ! -name '*.gz' -exec gzip "{}" -k -9 \;
     
         docker rmi octagon.formatik.webtool:old
         docker tag octagon.formatik.webtool:latest octagon.formatik.webtool:old
