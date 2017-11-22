@@ -11,4 +11,4 @@ RUN npm install -g http-server
 
 COPY dist/. ${appDir}
 
-CMD http-server -p 8000 -d false --gzip true --cors -c3600
+CMD http-server -p 8000 -d false --gzip --cors -c3600
