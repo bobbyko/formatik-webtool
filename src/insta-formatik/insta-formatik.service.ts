@@ -9,8 +9,8 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class InstaFormatikService {
-  static ENDPOINT: string =  "//api.formatik.io/v1.0";
-  //private static ENDPOINT = '//localhost:5000/v1.0';
+  //static ENDPOINT: string =  "//api.formatik.io/v1.0";
+  private static ENDPOINT = '//localhost:5000/v1.0';
   private static apiUserId = '59092f5f99da28278a6ea211';
 
   private inputCacheHashes: any = {};

@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, ElementRef, Renderer } from '@angular/core';
 import { DefaultUrlSerializer } from '@angular/router';
 import { Clipboard } from 'ts-clipboard';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
@@ -45,6 +45,8 @@ export class InstaFormatikComponent implements OnInit {
   public exampleChange: Subject<string>;
 
   constructor(
+    private el: ElementRef,
+    private renderer: Renderer,
     private toastr: ToastrService,
     private instaFormatikService: InstaFormatikService,
     private angulartics2Mixpanel: Angulartics2Mixpanel,
@@ -60,7 +62,7 @@ export class InstaFormatikComponent implements OnInit {
     this.isEmbedded = location.hash === '#embedded';
 
     this.uploader = new FileUploader({ url: this.instaFormatikService.GetUploadUrl() });
-    this.uploader.onCompleteItem = this.uploadComplete;
+    this.uploader.onSuccessItem = this.uploadComplete;
     this.uploader.onErrorItem = this.uploadError;
     (this.uploader as any).parent = this;
 
@@ -154,24 +156,13 @@ export class InstaFormatikComponent implements OnInit {
               break;
 
             default:
-              this.evaluation = undefined;
-              this.evaluationInProgress = false;
-              this.inputFormat = evaluation.InputFormat;
-              this.size = undefined;
-              this.records = undefined;
-              this.trunkated = undefined;
-              this.toastr.warning(evaluation.error);
+              this.handleError(evaluation.error);
               break;
           }
         }
       },
       (error) => {
-        this.evaluation = undefined;
-        this.evaluationInProgress = false;
-        this.size = undefined;
-        this.records = undefined;
-        this.trunkated = undefined;
-        this.toastr.error(error);
+        this.handleError(error);
       });
   }
 
@@ -207,25 +198,13 @@ export class InstaFormatikComponent implements OnInit {
                 break;
 
               default:
-                this.processed = undefined;
-                this.size = undefined;
-                this.records = undefined;
-                this.trunkated = undefined;
-                this.evaluationInProgress = false;
-                this.toastr.warning(processed.error);
-                this.angulartics2Mixpanel.eventTrack('process', { success: false, error: processed.error });
+                this.handleError(processed.error);
                 break;
             }
           }
         },
         (error) => {
-          this.processed = undefined;
-          this.size = undefined;
-          this.records = undefined;
-          this.trunkated = undefined;
-          this.evaluationInProgress = false;
-          this.toastr.error(error);
-          this.angulartics2Mixpanel.eventTrack('process', { success: false, error: error });
+          this.handleError(error);
         });
     } else {
       this.processed = undefined;
@@ -251,23 +230,47 @@ export class InstaFormatikComponent implements OnInit {
     this.uploader.uploadAll();
   }
 
-  uploadComplete(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): void {
+  uploadSuccess(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): void {
     const _this = ((this as any).parent as InstaFormatikComponent);
 
     _this.evaluation = undefined;
     _this.processed = undefined;
 
     const responseObj = JSON.parse(response);
-    _this.inputCacheId = responseObj.inputCacheId;
-    _this.inputFormat = responseObj.inputFormat;
-    _this.size = responseObj.size;
-    _this.records = responseObj.records;
-    _this.input = responseObj.input;
+
+    if (responseObj.status === 'OK') {
+      _this.inputCacheId = responseObj.inputCacheId;
+      _this.inputFormat = responseObj.inputFormat;
+      _this.size = responseObj.size;
+      _this.records = responseObj.records;
+      _this.input = responseObj.input;
+    } else {
+      _this.handleError(responseObj.error);
+    }
+
+    _this.resetFileUpload();
   }
 
   uploadError(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): void {
     const _this = ((this as any).parent as InstaFormatikComponent);
-    _this.toastr.error('Error uploading file: Service responded with error');
+    item.cancel();
+    _this.uploader.cancelAll();
+    _this.handleError('Error uploading file: Service responded with error');
+    _this.resetFileUpload();
+  }
+
+  handleError(error: string) {
+    this.processed = undefined;
+    this.size = undefined;
+    this.records = undefined;
+    this.trunkated = undefined;
+    this.evaluationInProgress = false;
+    this.toastr.error(error);
+    this.angulartics2Mixpanel.eventTrack('upload', { success: false, error: error });
+  }
+
+  resetFileUpload() {
+    this.renderer.setElementProperty(this.el.nativeElement.querySelector('#userFileUpload'), 'value', '');
   }
 
   getSizeLabel(): string {
