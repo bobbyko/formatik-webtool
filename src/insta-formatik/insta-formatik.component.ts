@@ -1,7 +1,8 @@
-import { Component, ViewChild, OnInit, ElementRef, Renderer } from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit, ElementRef, Renderer } from '@angular/core';
 import { DefaultUrlSerializer } from '@angular/router';
 import { Clipboard } from 'ts-clipboard';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
+import { TooltipModule } from "ngx-tooltip";
 
 import { Subject } from 'rxjs/Subject';
 
@@ -15,6 +16,8 @@ import { Angulartics2Mixpanel } from 'angulartics2/mixpanel';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie';
 import { NgProgress } from 'ngx-progressbar';
+import { StripeCheckoutLoader, StripeCheckoutHandler } from 'ng-stripe-checkout';
+
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -23,7 +26,9 @@ import { NgProgress } from 'ngx-progressbar';
   templateUrl: './insta-formatik.component.html'
 })
 
-export class InstaFormatikComponent implements OnInit {
+export class InstaFormatikComponent implements OnInit, AfterViewInit {
+  private stripeCheckoutHandler: StripeCheckoutHandler;
+
   public uploader: FileUploader;
 
   public isEmbedded: boolean;
@@ -52,6 +57,7 @@ export class InstaFormatikComponent implements OnInit {
     private angulartics2Mixpanel: Angulartics2Mixpanel,
     private cookie: CookieService,
     private urlSerializer: DefaultUrlSerializer,
+    private stripeCheckoutLoader: StripeCheckoutLoader,
     public ngProgress: NgProgress,
   ) {
     this.evaluationInProgress = false;
@@ -62,7 +68,7 @@ export class InstaFormatikComponent implements OnInit {
     this.isEmbedded = location.hash === '#embedded';
 
     this.uploader = new FileUploader({ url: this.instaFormatikService.GetUploadUrl() });
-    this.uploader.onSuccessItem = this.uploadComplete;
+    this.uploader.onSuccessItem = this.uploadSuccess;
     this.uploader.onErrorItem = this.uploadError;
     (this.uploader as any).parent = this;
 
@@ -104,6 +110,19 @@ export class InstaFormatikComponent implements OnInit {
     }
 
     this.angulartics2Mixpanel.setUsername(userId);
+  }
+
+  ngAfterViewInit() {
+    this.stripeCheckoutLoader.createHandler({
+      key: 'pk_test_XdsAFsL8cqtxomVYKyJgdwyQ',
+      allowRememberMe: true,
+      token: (token) => {
+        // Do something with the token...
+        console.log('Payment successful!', token);
+      }
+    }).then((handler: StripeCheckoutHandler) => {
+      this.stripeCheckoutHandler = handler;
+    });
   }
 
   canEvaluate(): Boolean {
@@ -285,5 +304,20 @@ export class InstaFormatikComponent implements OnInit {
     } else {
       return undefined;
     }
+  }
+
+  onClickBuy() {
+    this.stripeCheckoutHandler.open({
+      amount: 100,
+      currency: 'USD',
+      panelLabel: '3 Day Unlimited',
+      description: '3 Day Unlimited Data Size Processing',
+      image: 'https://webtool.formatik.io/assets/formatik-logo-stripe.png'
+    });
+  }
+
+  onClickCancel() {
+    // If the window has been opened, this is how you can close it:
+    this.stripeCheckoutHandler.close();
   }
 }

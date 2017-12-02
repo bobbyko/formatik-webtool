@@ -1,11 +1,22 @@
 <ng-progress [showSpinner]="false" [color]="'#FFBC49'" [toggle]="uploader.isUploading || evaluationInProgress"></ng-progress>
 <div class="container-fluid" [ngClass]="{ embedded: isEmbedded }">
   <div class="page-header">
-    <div class="panel">
-      <a class="pull-right" href="https://www.youtube.com/watch?v=77agyFmjm2c" target="_blank">
-        Watch Demo
-        <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
-      </a>
+    <div class="container-flex pull-right">
+      <br/>
+      <div class="row">
+        <div class="col-md-6">
+          <button class="btn btn-default pull-right" href="https://www.youtube.com/watch?v=77agyFmjm2c" target="_blank">
+            Watch Demo
+            <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="col-md-6">
+          <button (click)="onClickBuy()" class="btn btn-primary pull-right" tooltip="Purchase unrestricted data size processing">
+            <span class="glyphicon glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            Purchase
+          </button>
+        </div>
+      </div>
     </div>
     <h1>
       <a href="//www.formatik.io/">

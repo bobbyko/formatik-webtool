@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, DefaultUrlSerializer } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,13 +11,15 @@ import { InstaFormatikService } from './insta-formatik.service';
 
 // 3rd party modules
 import { Md5 } from 'ts-md5/dist/md5';
-import { Angulartics2Module} from 'angulartics2';
+import { Angulartics2Module } from 'angulartics2';
 import { Angulartics2Mixpanel } from 'angulartics2/mixpanel';
 import { CookieModule } from 'ngx-cookie';
 import { ToastrModule } from 'ngx-toastr';
 import { AlertModule } from 'ngx-bootstrap';
 import { FileUploadModule } from 'ng2-file-upload';
 import { NgProgressModule } from 'ngx-progressbar';
+import { StripeCheckoutModule } from 'ng-stripe-checkout';
+import { TooltipModule } from 'ngx-tooltip';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { NgProgressModule } from 'ngx-progressbar';
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     RouterModule.forRoot([]),
     BrowserAnimationsModule,
@@ -43,6 +46,8 @@ import { NgProgressModule } from 'ngx-progressbar';
     AlertModule.forRoot(),
     FileUploadModule,
     NgProgressModule,
+    StripeCheckoutModule,
+    TooltipModule
   ],
   providers: [DefaultUrlSerializer, InstaFormatikService],
   bootstrap: [InstaFormatikComponent]
