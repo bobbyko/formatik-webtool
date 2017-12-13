@@ -30,7 +30,7 @@ import { Component, Input } from '@angular/core';
 export class ModalComponent {
 
     @Input() public visible = false;
-    private visibleAnimate = false;
+    visibleAnimate = false;
 
     constructor() { }
 
@@ -49,5 +49,4 @@ export class ModalComponent {
             this.hide();
         }
     }
-
 }
