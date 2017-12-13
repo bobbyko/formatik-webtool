@@ -11,6 +11,7 @@ if [[ $WEBTOOL_LOCAL = $WEBTOOL_REMOTE && $1 != "force" ]]; then
 elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
     echo "Rebuilding..."
     
+    git checkout -- package-lock.json
     git pull
 
     echo "Building Webtool..."
