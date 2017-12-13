@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit, AfterViewInit, ElementRef, Renderer } fro
 import { DefaultUrlSerializer } from '@angular/router';
 import { Clipboard } from 'ts-clipboard';
 import { FileItem, FileUploader, ParsedResponseHeaders } from 'ng2-file-upload';
-import { TooltipModule } from "ngx-tooltip";
+import { TooltipModule } from 'ngx-tooltip';
 
 import { Subject } from 'rxjs/Subject';
 
@@ -10,23 +10,27 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/startWith';
 
-import { InstaFormatikService } from './insta-formatik.service';
+import { FormatikService } from './formatik.service';
+import { PaymentService } from './payment.service';
 
 import { Angulartics2Mixpanel } from 'angulartics2/mixpanel';
 import { ToastrService } from 'ngx-toastr';
 import { CookieService } from 'ngx-cookie';
 import { NgProgress } from 'ngx-progressbar';
 import { StripeCheckoutLoader, StripeCheckoutHandler } from 'ng-stripe-checkout';
+import { IStripeCheckoutToken } from 'ng-stripe-checkout/src/config.model';
+import * as moment from 'moment';
 
+const tokenCookie = 'unlimited-processing-token';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'insta-formatik',
-  styleUrls: ['insta-formatik.css'],
-  templateUrl: './insta-formatik.component.html'
+  selector: 'webtool',
+  styleUrls: ['webtool.css'],
+  templateUrl: './webtool.component.html'
 })
 
-export class InstaFormatikComponent implements OnInit, AfterViewInit {
+export class WebtoolComponent implements OnInit, AfterViewInit {
   private stripeCheckoutHandler: StripeCheckoutHandler;
 
   public uploader: FileUploader;
@@ -49,11 +53,18 @@ export class InstaFormatikComponent implements OnInit, AfterViewInit {
   public inputChange: Subject<string>;
   public exampleChange: Subject<string>;
 
+  // existing token re-entry
+  public email: string;
+  public token: string;
+
+  public processing: boolean;
+
   constructor(
     private el: ElementRef,
     private renderer: Renderer,
     private toastr: ToastrService,
-    private instaFormatikService: InstaFormatikService,
+    private formatikService: FormatikService,
+    private paymentService: PaymentService,
     private angulartics2Mixpanel: Angulartics2Mixpanel,
     private cookie: CookieService,
     private urlSerializer: DefaultUrlSerializer,
@@ -67,7 +78,7 @@ export class InstaFormatikComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.isEmbedded = location.hash === '#embedded';
 
-    this.uploader = new FileUploader({ url: this.instaFormatikService.GetUploadUrl() });
+    this.uploader = new FileUploader({ url: this.formatikService.GetUploadUrl() });
     this.uploader.onSuccessItem = this.uploadSuccess;
     this.uploader.onErrorItem = this.uploadError;
     (this.uploader as any).parent = this;
@@ -110,18 +121,15 @@ export class InstaFormatikComponent implements OnInit, AfterViewInit {
     }
 
     this.angulartics2Mixpanel.setUsername(userId);
+
+    this.token = this.cookie.get(tokenCookie);
   }
 
-  ngAfterViewInit() {
-    this.stripeCheckoutLoader.createHandler({
+  async ngAfterViewInit() {
+    this.stripeCheckoutHandler = await this.stripeCheckoutLoader.createHandler({
       key: 'pk_test_XdsAFsL8cqtxomVYKyJgdwyQ',
       allowRememberMe: true,
-      token: (token) => {
-        // Do something with the token...
-        console.log('Payment successful!', token);
-      }
-    }).then((handler: StripeCheckoutHandler) => {
-      this.stripeCheckoutHandler = handler;
+      token: this.onToken
     });
   }
 
@@ -150,7 +158,7 @@ export class InstaFormatikComponent implements OnInit, AfterViewInit {
   evaluate(): void {
     this.evaluationInProgress = true;
 
-    this.instaFormatikService
+    this.formatikService
       .evaluate(this.inputCacheId ? undefined : this.input, this.inputCacheId, this.example)
       .subscribe(
       (evaluation) => {
@@ -189,7 +197,7 @@ export class InstaFormatikComponent implements OnInit, AfterViewInit {
     this.evaluationInProgress = true;
 
     if (this.evaluation.formatId) {
-      this.instaFormatikService
+      this.formatikService
         .process(this.evaluation.formatId, this.inputCacheId ? undefined : this.input, this.inputCacheId)
         .subscribe((processed) => {
 
@@ -250,7 +258,7 @@ export class InstaFormatikComponent implements OnInit, AfterViewInit {
   }
 
   uploadSuccess(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): void {
-    const _this = ((this as any).parent as InstaFormatikComponent);
+    const _this = ((this as any).parent as WebtoolComponent);
 
     _this.evaluation = undefined;
     _this.processed = undefined;
@@ -271,7 +279,7 @@ export class InstaFormatikComponent implements OnInit, AfterViewInit {
   }
 
   uploadError(item: FileItem, response: string, status: number, headers: ParsedResponseHeaders): void {
-    const _this = ((this as any).parent as InstaFormatikComponent);
+    const _this = ((this as any).parent as WebtoolComponent);
     item.cancel();
     _this.uploader.cancelAll();
     _this.handleError('Error uploading file: Service responded with error');
@@ -319,5 +327,56 @@ export class InstaFormatikComponent implements OnInit, AfterViewInit {
   onClickCancel() {
     // If the window has been opened, this is how you can close it:
     this.stripeCheckoutHandler.close();
+  }
+
+  onToken(token: IStripeCheckoutToken) {
+    this.paymentService.checkout(token)
+      .subscribe(payment => {
+        if (payment.status === 'OK') {
+
+        } else {
+          switch (payment.errorCode) {
+            case 'DuplicatePayment':
+              break;
+
+            default:
+              break;
+          }
+        }
+      });
+  }
+
+  validateToken() {
+    this.processing = true;
+    this.paymentService.validate(this.email, this.token)
+      .subscribe(purchaseToken => {
+        this.processing = false;
+        if (purchaseToken.status === 'OK') {
+          this.email = undefined;
+          this.cookie.put(tokenCookie, purchaseToken.token, { expires: moment(purchaseToken.expires).toDate() });
+          this.toastr.success('Token successfully validated. Enjoy unrestricted data size Formatiks!');
+        } else {
+          this.email = undefined;
+          this.token = undefined;
+
+          switch (purchaseToken.errorCode) {
+            case 'Expired':
+            case 'InvalidToken':
+              this.cookie.remove(tokenCookie);
+              this.toastr.error('Invalid token or token has expired');
+              break;
+
+            default:
+              this.toastr.error(purchaseToken.error);
+          }
+        }
+      },
+      (error) => {
+        this.email = undefined;
+        this.token = undefined;
+        this.processing = false;
+
+        this.handleError(error);
+      });
   }
 }

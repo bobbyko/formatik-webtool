@@ -1,18 +1,24 @@
-<ng-progress [showSpinner]="false" [color]="'#FFBC49'" [toggle]="uploader.isUploading || evaluationInProgress"></ng-progress>
+<ng-progress [showSpinner]="false" [color]="'#FFBC49'" [toggle]="uploader.isUploading || evaluationInProgress || processing"></ng-progress>
 <div class="container-fluid" [ngClass]="{ embedded: isEmbedded }">
   <div class="page-header">
     <div class="container-flex pull-right">
       <br/>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <button class="btn btn-default pull-right" href="https://www.youtube.com/watch?v=77agyFmjm2c" target="_blank">
             Watch Demo
             <span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>
           </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
+          <button (click)="enterTokenModal.show()" class="btn btn-default pull-right" tooltip="Enter existing Token to unlock unlimited processing">
+            <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>
+            Enter Token
+          </button>
+        </div>
+        <div class="col-md-4">
           <button (click)="onClickBuy()" class="btn btn-primary pull-right" tooltip="Purchase unrestricted data size processing">
-            <span class="glyphicon glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
             Purchase
           </button>
         </div>
@@ -89,4 +95,23 @@
     Copyright 2017. Octagon Solutions
   </div>
   <div toastContainer></div>
+  <app-modal #enterTokenModal>
+    <div class="app-modal-header">
+        Enter existing Token to unlock unlimited processing
+    </div>
+    <div class="app-modal-body">
+      <div class="form-group">
+        <label for="existingTokenEmail">Email address</label>
+        <input #existingTokenEmail type="email" class="form-control" [(ngModel)]="email" placeholder="Email">
+      </div>
+      <div class="form-group">
+        <label for="existingToken">Token</label>
+        <input #existingToken type="text" class="form-control" [(ngModel)]="token" placeholder="Token">
+      </div>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-default" (click)="enterTokenModal.hide()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="enterTokenModal.hide();validateToken()">Enter</button>
+    </div>
+  </app-modal>
 </div>

@@ -40,7 +40,6 @@ elif [[ $WEBTOOL_LOCAL = $WEBTOOL_BASE || $1 == "force" ]]; then
         #     --network formatik_net \
         #     --replicas 1 \
         #     --constraint 'node.labels.webtool == true' \
-        #     --publish 8080:8000 \
         #     --name webtool \
         #     --hostname formatik-webtool \
         #     octagon.formatik.webtool:latest

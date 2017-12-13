@@ -5,8 +5,10 @@ import { HttpModule } from '@angular/http';
 import { RouterModule, DefaultUrlSerializer } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { InstaFormatikComponent } from './insta-formatik.component';
-import { InstaFormatikService } from './insta-formatik.service';
+import { WebtoolComponent } from './webtool.component';
+import { ModalComponent } from './modal.component';
+import { FormatikService } from './formatik.service';
+import { PaymentService } from './payment.service';
 
 
 // 3rd party modules
@@ -23,7 +25,8 @@ import { TooltipModule } from 'ngx-tooltip';
 
 @NgModule({
   declarations: [
-    InstaFormatikComponent
+    WebtoolComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +52,7 @@ import { TooltipModule } from 'ngx-tooltip';
     StripeCheckoutModule,
     TooltipModule
   ],
-  providers: [DefaultUrlSerializer, InstaFormatikService],
-  bootstrap: [InstaFormatikComponent]
+  providers: [DefaultUrlSerializer, FormatikService, PaymentService],
+  bootstrap: [WebtoolComponent]
 })
-export class InstaFormatikModule { }
+export class WebtoolModule { }

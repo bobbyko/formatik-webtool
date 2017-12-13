@@ -8,9 +8,9 @@ import { Md5 } from 'ts-md5/dist/md5';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class InstaFormatikService {
-  //static ENDPOINT: string =  "//api.formatik.io/v1.0";
-  private static ENDPOINT = '//localhost:5000/v1.0';
+export class FormatikService {
+  static ENDPOINT: string =  '//api.formatik.io/v1.0';
+  //private static ENDPOINT = '//localhost:5000/v1.0';
   private static apiUserId = '59092f5f99da28278a6ea211';
 
   private inputCacheHashes: any = {};
@@ -24,7 +24,7 @@ export class InstaFormatikService {
 
     return this._http
       .post(
-      `${InstaFormatikService.ENDPOINT}/${InstaFormatikService.apiUserId}/evaluate`,
+      `${FormatikService.ENDPOINT}/${FormatikService.apiUserId}/evaluate`,
       {
         name: `Webtool request ${Md5.hashStr(inputCacheHash + example)}`,
         input: input,
@@ -46,7 +46,7 @@ export class InstaFormatikService {
   public process(formatId: string, input: string, inputCacheId: string): Observable<any> {
     return this._http
       .post(
-      `${InstaFormatikService.ENDPOINT}/${InstaFormatikService.apiUserId}/${formatId}`,
+      `${FormatikService.ENDPOINT}/${FormatikService.apiUserId}/${formatId}`,
       {
         input: input,
         inputCacheId: inputCacheId
@@ -55,6 +55,6 @@ export class InstaFormatikService {
   }
 
   public GetUploadUrl(): string {
-    return `${ InstaFormatikService.ENDPOINT }/${InstaFormatikService.apiUserId}/upload`;
+    return `${ FormatikService.ENDPOINT }/${FormatikService.apiUserId}/upload`;
   }
 }

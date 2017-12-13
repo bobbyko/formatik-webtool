@@ -1,6 +1,6 @@
 {
   "name": "formatik-webtool",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -26,6 +26,7 @@
     "angulartics2": "^4.0.4",
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
+    "moment": "^2.19.3",
     "ng-stripe-checkout": "^1.0.2",
     "ng2-file-upload": "^1.2.1",
     "ngx-bootstrap": "^2.0.0-beta.8",
@@ -39,11 +40,11 @@
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
-    "@angular/cli": "1.5.3",
+    "@angular/cli": "^1.6.0",
     "@angular/compiler-cli": "^5.0.0",
     "@angular/language-service": "^5.0.0",
     "@types/node": "~6.0.60",
-    "codelyzer": "~3.2.0",
+    "codelyzer": "^4.0.1",
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "^5.8.0",
